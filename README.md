@@ -13,12 +13,29 @@ CMS written in Ruby for cloud computing.
 ## Installation
 
     $ git clone git://github.com/komagata/lokka.git
+    $ git submodule init
+    $ git submodule update
     $ cd lokka
     $ bundle install --without=production:test
     $ bundle exec rake db:setup
     $ bundle exec rackup
 
 View at: http://localhost:9292/
+
+## How to use deck.js integration
+
+[deck.js](https://github.com/imakewebthings/deck.js) is A jQuery library for modern HTML presentations.
+
+With this lokka extension, you can write an article as a Kramdown (super set of markdown) document, then convert it to a slide without any operation.
+
+What you have to do is add *p/* before the article page's URL.
+
+For example:
+
+    http://localhost:9292/1 -> http://localhost:9292/p/1
+
+This supports only Kramdown now, entries written with other type are redirected to normal view.  This is because a Kramdown entry can be used as a presentation and a blog entry at the same time, and I prefer markdown :D
+
 
 ## Deploy to Heroku
 
