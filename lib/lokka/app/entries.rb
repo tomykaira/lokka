@@ -126,6 +126,22 @@ module Lokka
       render_detect :yearly, :entries
     end
 
+    # entry as a presentation
+    get %r{^/p/([_/0-9a-zA-Z-]+)$} do |id_or_slug|
+      @entry = Entry.get_by_fuzzy_slug(id_or_slug)
+
+      return 404 if @entry.blank?
+      redirect @entry.link if @entry.type == Post && custom_permalink?
+
+      redirect id_or_slug if @entry.markup != 'kramdown'
+
+      require 'kramdown/converter/deck'
+      @title = @entry.title
+      @content = Kramdown::Document.new(@entry.raw_body).to_deck
+      @id_or_slug = id_or_slug
+      erb :'system/deck', :layout => false
+    end
+
     # entry
     get %r{^/([_/0-9a-zA-Z-]+)$} do |id_or_slug|
       @entry = Entry.get_by_fuzzy_slug(id_or_slug)
